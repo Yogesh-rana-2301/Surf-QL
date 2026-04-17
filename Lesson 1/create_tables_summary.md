@@ -39,5 +39,5 @@ FROM existing_table;
 ## Key points
 
 - Pick data types carefully for storage and performance.
-- Use `DESC table_name;` to inspect the table structure.
+- Use `DESC table_name;` to inspect the table structure. (DESCRIBE)
 - Use `ALTER TABLE` to change structure later.
