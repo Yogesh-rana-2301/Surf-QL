@@ -10,7 +10,8 @@ SQL operators are used to calculate values, compare data, and combine conditions
 - Comparison: `=`, `>`, `<`, `>=`, `<=`, `<>`
 - Logical: `AND`, `OR`, `NOT`
 - Bitwise: `&`, `|`, `^`, `~`
-- Special: `BETWEEN`, `IN`, `LIKE`, `IS NULL`, `EXISTS`
+- Special: `BETWEEN`, `IN`, `LIKE`, `IS NULL`, `EXISTS`/
+> Between is inclusive
 
 ## Practical use
 
