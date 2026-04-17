@@ -47,3 +47,20 @@ FROM employees
 GROUP BY department
 HAVING COUNT(*) > 5;
 ```
+
+
+---
+---
+Column alias: <br>
+```sql
+SELECT name AS student_name;
+```
+👉 Just a label (no storage change) <br>
+can also be used in where, from <br>
+
+
+Table creation: <br>
+```sql
+CREATE TABLE new_table AS SELECT ...
+```
+👉 Actually creates a physical table
