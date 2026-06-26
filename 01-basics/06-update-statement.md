@@ -150,11 +150,39 @@ WHERE dept_id = 40;
 ## ❓ Practice Questions
 
 1. Write an `UPDATE` statement to give all employees in the HR department (`dept_id = 20`) a 5% salary increase. How many rows would this affect?
+```sql
+UPDATE employess
+SET salary = salary * 1.05
+WHERE dept_id=20;
 
-2. A typo was made — customer `Komal Desai` (customer_id=8) is listed as being from `'Pune'` but should be `'Nagpur'`. Write the `UPDATE` to fix this.
+```
 
-3. Write an `UPDATE` to change the status of all `'cancelled'` orders in the `orders` table that were placed before `2024-03-01` to `'pending'`. Use both conditions in your WHERE clause.
+3. A typo was made — customer `Komal Desai` (customer_id=8) is listed as being from `'Pune'` but should be `'Nagpur'`. Write the `UPDATE` to fix this.
+```sql
+UPDATE customers
+SET city = 'Nagpur'
+WHERE name= 'Komal Desai';
+```
 
-4. Using a subquery in the WHERE clause, write an UPDATE to set the salary of all employees who have a performance rating of `'C'` to exactly ₹60,000. Use the `performance` table as the subquery source.
+5. Write an `UPDATE` to change the status of all `'cancelled'` orders in the `orders` table that were placed before `2024-03-01` to `'pending'`. Use both conditions in your WHERE clause.
+```sql
+UPDATE orders
+SET status = 'pending'
+WHERE status = 'cancelled' AND order_date < '2024-03-01';
+```
+7. Using a subquery in the WHERE clause, write an UPDATE to set the salary of all employees who have a performance rating of `'C'` to exactly ₹60,000. Use the `performance` table as the subquery source.
+```sql
+UPDATE employees
+SET salary = 60000
+WHERE emp_id IN (
+    SELECT emp_id
+    FROM performance
+    WHERE rating = 'C'
+);
+```
 
-5. A developer accidentally runs `UPDATE orders SET status = 'cancelled';` without a WHERE clause. (a) What just happened? (b) If the database is in autocommit mode, can you recover? (c) What practices would prevent this mistake?
+9. A developer accidentally runs `UPDATE orders SET status = 'cancelled';` without a WHERE clause. (a) What just happened? (b) If the database is in autocommit mode, can you recover? (c) What practices would prevent this mistake?
+```md
+all the values will be changed, no on autocommit no, always use where and use sql_safe_state = 1;
+
+```
