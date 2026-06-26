@@ -134,11 +134,37 @@ SELECT * FROM employees;
 ## ❓ Practice Questions
 
 1. Write a query to display each employee's `name`, `salary`, and a computed column called `monthly_salary` (annual salary divided by 12) from the `employees` table.
+```sql
+SELECT name, salary, salary / 12 AS monthly_salary
+FROM employees;
+```
 
-2. Write a query to show all unique `category` values from the `products` table. How many distinct categories exist?
+3. Write a query to show all unique `category` values from the `products` table. How many distinct categories exist?
+```sql
+SELECT DISTINCT category
+```
 
-3. Write a `SELECT` statement that displays employee `name`, their `email` in uppercase (use `UPPER()`), and a label column called `domain` that shows only the domain part of the email (e.g., `company.com`). Use `SUBSTRING_INDEX(email, '@', -1)`.
+5. Write a `SELECT` statement that displays employee `name`, their `email` in uppercase (use `UPPER()`), and a label column called `domain` that shows only the domain part of the email (e.g., `company.com`). Use `SUBSTRING_INDEX(email, '@', -1)`.
+```sql
+SELECT name,
+       UPPER(email) AS email,
+       SUBSTRING_INDEX(email, '@', -1) AS domain
+FROM employees;
+```
 
-4. Without using `WHERE`, write a query using `SELECT` and `CASE WHEN` to label each product from the `products` table as `'Expensive'` if price > 10000, `'Moderate'` if price between 1000 and 10000, and `'Affordable'` otherwise.
+7. Without using `WHERE`, write a query using `SELECT` and `CASE WHEN` to label each product from the `products` table as `'Expensive'` if price > 10000, `'Moderate'` if price between 1000 and 10000, and `'Affordable'` otherwise.
+```sql
+SELECT name,
+       CASE
+           WHEN price > 10000 THEN 'Expensive'
+           WHEN price BETWEEN 1000 AND 10000 THEN 'Moderate'
+           ELSE 'Affordable'
+       END AS price_category
+FROM products;
+```
 
-5. A teammate writes `SELECT DISTINCT dept_id, name FROM employees`. They expect to see only 4 unique `dept_id` values. Explain why they see more than 4 rows, and how `DISTINCT` actually works on multiple columns.
+9. A teammate writes `SELECT DISTINCT dept_id, name FROM employees`. They expect to see only 4 unique `dept_id` values. Explain why they see more than 4 rows, and how `DISTINCT` actually works on multiple columns.
+```md
+becaseu both the values are being treated now for begin distinct , so the compostie column distinction will be there.
+
+```
