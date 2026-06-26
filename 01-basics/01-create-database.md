@@ -86,10 +86,36 @@ USE surfql;
 
 1. Write a SQL script that safely creates a database called `surfql`, selects it, and verifies it appears in the database list. Make the script safe to run multiple times.
 
-2. You are setting up a new MySQL server for a company. Write the commands to create a database named `company_db` with proper Unicode support, then make it the active database.
+``` sql
+DROP DATABASE IF EXISTS db;
+CREATE DATABASE db;
+USE db;
+SHOW DATABASES;
 
-3. What is the difference between `DROP DATABASE surfql` and `DROP TABLE employees`? What happens to the data in each case?
+```
 
-4. A junior developer runs `CREATE DATABASE surfql;` twice on the same server and gets an error on the second run. What change would you make to the command to prevent this, and why?
+3. You are setting up a new MySQL server for a company. Write the commands to create a database named `company_db` with proper Unicode support, then make it the active database.
+``` sql
+DROP DATABASE IF EXISTS company_db;
+CREATE DATABASE company_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE company_db;
 
-5. You need to query the `employees` table in `surfql` and the `users` table in `auth_db` in the same SQL statement without using `USE`. Write the query.
+
+```
+
+4. What is the difference between `DROP DATABASE surfql` and `DROP TABLE employees`? What happens to the data in each case?
+
+6. A junior developer runs `CREATE DATABASE surfql;` twice on the same server and gets an error on the second run. What change would you make to the command to prevent this, and why?
+``` sql
+DROP DATABASE IF EXISTS company_db;
+```
+
+8. You need to query the `employees` table in `surfql` and the `users` table in `auth_db` in the same SQL statement without using `USE`. Write the query.
+
+``` sql
+SELECT * from surfql.employess;
+
+SELECT * from auth_db.users;
+
+
+```
