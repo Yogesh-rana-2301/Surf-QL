@@ -137,10 +137,43 @@ CREATE TABLE performance (
 
 1. Write the `CREATE TABLE` statement for the `customers` table with `customer_id` (PK), `name` (NOT NULL), `city` (nullable), and `email` (UNIQUE, NOT NULL). Use appropriate data types.
 
-2. The `performance` table should enforce that no employee has more than one record per year. How would you add this constraint at the table level? Write the full `CREATE TABLE` statement.
+```sql
+CREATE TABLE IF NOT EXISTS customers (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    city VARCHAR(100),
+    email VARCHAR(255) UNIQUE NOT NULL
+);
+```
 
-3. What is the difference between `DECIMAL(10,2)` and `FLOAT`? Which would you use for the `salary` column in `employees`, and why?
+3. The `performance` table should enforce that no employee has more than one record per year. How would you add this constraint at the table level? Write the full `CREATE TABLE` statement.
+```sql
+UNIQUE (emp_id, year)    -- each employee can have only one record per year
+```
 
-4. Write a `CREATE TABLE` statement for a `project_assignments` table that records which employee is assigned to which project, with a composite primary key on `(emp_id, project_id)`, and foreign keys referencing `employees`.
+5. What is the difference between `DECIMAL(10,2)` and `FLOAT`? Which would you use for the `salary` column in `employees`, and why?
+   
+| DECIMAL(10,2) | FLOAT |
+|---|---|
+| Exact numeric type | Approximate numeric type |
+| No rounding errors | May have rounding/precision errors |
+| Fixed-point | Floating-point |
+| Slower | Faster |
+| Used for money, prices, salaries | Used for scientific calculations, sensor data, graphics |
 
-5. You want to add a column `is_active BOOLEAN DEFAULT TRUE NOT NULL` to the `employees` table schema. Write the full `CREATE TABLE` for `employees` including this new column alongside all original columns.
+ 
+
+7. Write a `CREATE TABLE` statement for a `project_assignments` table that records which employee is assigned to which project, with a composite primary key on `(emp_id, project_id)`, and foreign keys referencing `employees`.
+
+
+9. You want to add a column `is_active BOOLEAN DEFAULT TRUE NOT NULL` to the `employees` table schema. Write the full `CREATE TABLE` for `employees` including this new column alongside all original columns.
+ 
+```sql
+CREATE TABLE IF NOT EXISTS customers (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    city VARCHAR(100),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE NOT NULL
+);
+```
