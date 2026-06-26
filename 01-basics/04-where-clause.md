@@ -145,11 +145,43 @@ WHERE hire_date >= '2022-01-01';
 ## ❓ Practice Questions
 
 1. Write a query to find all employees in the Finance department (`dept_id = 30`) with a salary above ₹65,000. Return their `name`, `salary`, and `hire_date`.
+```sql
+SELECT name, salary, hire_date
+FROM employees
+WHERE dept_id = 30
+  AND salary > 65000;
+```
 
-2. Find all customers who are **not** from Mumbai or Delhi. Use the `customers` table. Write two versions: one using `!=` with `AND`, and one using `NOT IN`.
+3. Find all customers who are **not** from Mumbai or Delhi. Use the `customers` table. Write two versions: one using `!=` with `AND`, and one using `NOT IN`.
+```sql
+SELECT name
+FROM customers
+WHERE state NOT IN ('Mumbai', 'Delhi');
+```
+or 
+```sql
+SELECT name
+FROM customers
+WHERE state <> 'Mumbai'
+  AND state <> 'Delhi';
+```
 
-3. Write a query to find employees with no manager assigned (`manager_id IS NULL`) OR employees with no department assigned (`dept_id IS NULL`). How many such employees exist in the dataset?
+5. Write a query to find employees with no manager assigned (`manager_id IS NULL`) OR employees with no department assigned (`dept_id IS NULL`). How many such employees exist in the dataset?
+```sql
+SELECT name
+FROM employees
+WHERE manager_id IS NULL
+   OR dept_id IS NULL;
+```
 
-4. From the `orders` table, retrieve all orders where the `status` is `'pending'` and the `amount` is greater than ₹5,000. Return `order_id`, `amount`, and `order_date`.
+7. From the `orders` table, retrieve all orders where the `status` is `'pending'` and the `amount` is greater than ₹5,000. Return `order_id`, `amount`, and `order_date`.
+```sql
+SELECT order_id , amount, order_date
+FROM orders
+WHERE status = 'pending' AND amount > 5000;
+```
 
-5. A developer writes: `SELECT name FROM employees WHERE dept_id = NULL;` and gets 0 rows. They're confused — they know some employees have no department. Explain what's wrong and write the corrected query.
+
+9. A developer writes: `SELECT name FROM employees WHERE dept_id = NULL;` and gets 0 rows. They're confused — they know some employees have no department. Explain what's wrong and write the corrected query.
+```md
+because he is using null and dept_id=NULL is unknown, use IS```
