@@ -125,11 +125,44 @@ TRUNCATE TABLE orders;
 ## ❓ Practice Questions
 
 1. Write a `DELETE` statement to remove the performance record for `emp_id = 3` (Priya Nair) from the `performance` table. Which `perf_id` row does this correspond to?
+```sql
+DELETE 
+FROM performace
+WHERE emp_id =3 ;
+```
 
-2. Delete all `'pending'` orders placed before `'2024-03-01'` from the `orders` table. Write the query and identify which `order_id`s would be removed.
+3. Delete all `'pending'` orders placed before `'2024-03-01'` from the `orders` table. Write the query and identify which `order_id`s would be removed.
+```sql
+SELECT *
+FROM orders
+WHERE status ='pending ' AND order_date < '2024-03-01'
 
-3. Write a query to delete all customers from the `customers` table who have **no orders** (i.e., their `customer_id` does not appear in the `orders` table). Use a subquery with `NOT IN`.
 
-4. You try to delete `dept_id = 20` (HR) from `departments`, but it fails with a foreign key constraint error. Explain why, and write the two-step solution to safely delete the HR department and reassign its employees.
+DELETE 
+FROM orders
+WHERE status ='pending ' AND order_date < '2024-03-01'
+```
 
-5. Compare `DELETE FROM orders;` vs `TRUNCATE TABLE orders;` — explain the difference in terms of: (a) transaction rollback, (b) auto-increment reset, (c) trigger execution, and (d) performance.
+
+4. Write a query to delete all customers from the `customers` table who have **no orders** (i.e., their `customer_id` does not appear in the `orders` table). Use a subquery with `NOT IN`.
+```sql
+DELETE 
+FROM customers
+WHERE customer_id NOT IN(
+    SELECT customer_id
+    FROM orders
+); 
+```
+
+6. You try to delete `dept_id = 20` (HR) from `departments`, but it fails with a foreign key constraint error. Explain why, and write the two-step solution to safely delete the HR department and reassign its employees.
+```md
+because of the referncing to the parent table, you update the values in the child table initially, and otherise use ON DELETE CASCADE , ON DELETE SET NULL
+```
+
+8. Compare `DELETE FROM orders;` vs `TRUNCATE TABLE orders;` — explain the difference in terms of: (a) transaction rollback, (b) auto-increment reset, (c) trigger execution, and (d) performance.
+```md
+rollback in delete, not in truncate.
+auto-increment reset in truncate , not in delete
+trigger on delete , not in truncate.
+delete performace is bad, truncate is good,
+```
