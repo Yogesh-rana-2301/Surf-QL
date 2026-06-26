@@ -133,11 +133,48 @@ VALUES (13, 99, 1, 5000, '2026-01-01', 'completed');
 ## ❓ Practice Questions
 
 1. Insert a new customer — `Tanvi Shah`, from `Ahmedabad`, with email `tanvi.shah@gmail.com` — into the `customers` table. Assign her `customer_id = 9`.
+```sql
+INSERT INTO customers (name, city, email, customer_id)
+VALUES 
+     ('Tanvi Shah', 'Ahmedabad','tanvi.shah@gmail.com', 9)
+;
+```
 
-2. Write a single `INSERT` statement to add three new orders for customer_id 7 (Jaya Krishnan, who currently has no orders): one completed order for product 4, one pending order for product 7, and one cancelled order for product 2. Assign `order_id` values 13, 14, 15.
+3. Write a single `INSERT` statement to add three new orders for customer_id 7 (Jaya Krishnan, who currently has no orders): one completed order for product 4, one pending order for product 7, and one cancelled order for product 2. Assign `order_id` values 13, 14, 15.
+```sql
+INSERT INTO orders
+(order_id, customer_id, product_id, status)
+VALUES
+(13, 7, 4, 'completed'),
+(14, 7, 7, 'pending'),
+(15, 7, 2, 'cancelled');
 
-3. Using `INSERT INTO ... SELECT`, populate a new table called `high_earners (emp_id, name, salary)` with all employees from the `employees` table who earn more than ₹80,000.
+```
 
-4. What happens if you try to insert a row into `orders` with a `customer_id` that doesn't exist in `customers`? What constraint causes this, and what error behavior do you expect?
 
-5. Write an upsert for the `performance` table: insert a record for `emp_id=6, year=2023, rating='A', bonus=9000` (perf_id=9). If a record with the same `perf_id` already exists, update the `rating` and `bonus` instead.
+5. Using `INSERT INTO ... SELECT`, populate a new table called `high_earners (emp_id, name, salary)` with all employees from the `employees` table who earn more than ₹80,000.
+```sql
+INSERT INTO high_earners (emp_id, name, salary)
+SELECT (emp_id, name, salary)
+FROM employees
+WHERE salary>80000;
+;
+```
+
+
+7. What happens if you try to insert a row into `orders` with a `customer_id` that doesn't exist in `customers`? What constraint causes this, and what error behavior do you expect?
+```md
+foreign key constrant is not satified, and it says about foreign key value for somethign which dont exist in the customers table.
+```
+
+9. Write an upsert for the `performance` table: insert a record for `emp_id=6, year=2023, rating='A', bonus=9000` (perf_id=9). If a record with the same `perf_id` already exists, update the `rating` and `bonus` instead.
+
+```sql
+INSERT INTO performance
+(perf_id, emp_id, year, rating, bonus)
+VALUES
+(9, 6, 2023, 'A', 9000)
+ON DUPLICATE KEY UPDATE
+rating = 'A',
+bonus = 9000;
+```
