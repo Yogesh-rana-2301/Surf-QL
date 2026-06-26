@@ -181,11 +181,30 @@ WHERE dept_id IN (10, 30)
 ## ❓ Practice Questions
 
 1. Write a query to find all employees with a salary between ₹70,000 and ₹95,000 (inclusive) who work in either Engineering or Finance. Use `BETWEEN` and `IN` together.
+```sql
+SELECT name, salary
+FROM employees
+WHERE salary  BETWEEN 70000 AND 95000 AND department IN ('Engineering', 'Finance');
 
-2. From the `products` table, find all products whose `product_name` contains the word `'Pro'` or starts with `'C'`. Use `LIKE` and `OR`.
+```
 
-3. Find all customers whose `email` ends with `'@gmail.com'` and whose `city` is NOT in `('Mumbai', 'Delhi')`. Use `LIKE` and `NOT IN`.
+3. From the `products` table, find all products whose `product_name` contains the word `'Pro'` or starts with `'C'`. Use `LIKE` and `OR`.
+```sql
+SELECT name
+FROM products
+WHERE NAME LIKE = '%Pro%' OR NAME LIKE = 'C%';
 
-4. Explain what happens when you run: `SELECT name FROM employees WHERE dept_id NOT IN (10, 20, NULL);`. Why does this return 0 rows? Write a corrected version using `NOT EXISTS` or with an explicit NULL guard.
 
-5. Write a query to retrieve all orders placed in Q1 2024 (January 1 to March 31) with a status of either `'pending'` or `'completed'`. Use `BETWEEN` for the date range and `IN` for the status. Return `order_id`, `amount`, `order_date`, `status`.
+```
+
+5. Find all customers whose `email` ends with `'@gmail.com'` and whose `city` is NOT in `('Mumbai', 'Delhi')`. Use `LIKE` and `NOT IN`.
+```sql
+SELECT name
+FROM customers
+WHERE email LIKE '%@gmail.com' AND city NOT IN ('Mumbai', 'Delhi');
+
+
+```
+6. Explain what happens when you run: `SELECT name FROM employees WHERE dept_id NOT IN (10, 20, NULL);`. Why does this return 0 rows? Write a corrected version using `NOT EXISTS` or with an explicit NULL guard.
+
+7. Write a query to retrieve all orders placed in Q1 2024 (January 1 to March 31) with a status of either `'pending'` or `'completed'`. Use `BETWEEN` for the date range and `IN` for the status. Return `order_id`, `amount`, `order_date`, `status`.
