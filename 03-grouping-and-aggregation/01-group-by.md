@@ -46,7 +46,7 @@ This order explains two vital rules:
 
 
 > there is a problem with grouping sets, cube, in mysql but not in oracle, and postgre, that it wont fill the not known values with NULL automatically so invalid, so think of grouping sets as
-> ROLLUPs do work tho
+---
 
 ```sql
 SELECT
@@ -65,6 +65,9 @@ SELECT
 FROM Sales
 GROUP BY Product;
 ```
+> ROLLUPs do work tho
+> 
+---
 ### GROUPING SETS, ROLLUP, CUBE (Advanced)
 
 These extensions generate multiple groupings in a single query, useful for reporting totals and subtotals without `UNION ALL`.
