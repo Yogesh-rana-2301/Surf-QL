@@ -1,10 +1,10 @@
-# 🏄 Surf-QL — SQL Placement Preparation Guide
+# Surf-QL — SQL Placement Preparation Guide
 
 A structured, interview-ready SQL study repository. Every topic file includes explanations, examples using a **shared dataset**, interview tips, and practice questions.
 
 ---
 
-## 🗃️ Shared Dataset
+## Shared Dataset
 
 All examples across this repo use the same set of tables defined in [`dataset.sql`](./dataset.sql).
 
@@ -14,7 +14,7 @@ Run `dataset.sql` once to set up the data for practice.
 
 ---
 
-## 📚 Study Roadmap
+## Study Roadmap
 
 Work through modules in order. Each folder builds on the previous.
 
@@ -69,7 +69,7 @@ Work through modules in order. Each folder builds on the previous.
 | # | File | Topic |
 |---|---|---|
 | 1 | [01-inner-join.md](./04-joins/01-inner-join.md) | INNER JOIN — intersection of two tables |
-| 2 | [02-left-right-join.md](./04-joins/02-left-right-join.md) | LEFT/RIGHT JOIN — ON vs WHERE trap ⚠️ |
+| 2 | [02-left-right-join.md](./04-joins/02-left-right-join.md) | LEFT/RIGHT JOIN — ON vs WHERE trap  |
 | 3 | [03-full-outer-join.md](./04-joins/03-full-outer-join.md) | FULL OUTER JOIN, MySQL workaround |
 | 4 | [04-cross-self-join.md](./04-joins/04-cross-self-join.md) | CROSS JOIN, SELF JOIN (employee-manager) |
 | 5 | [05-union-intersect-except.md](./04-joins/05-union-intersect-except.md) | UNION, UNION ALL, INTERSECT, EXCEPT |
@@ -138,7 +138,7 @@ Work through modules in order. Each folder builds on the previous.
 | # | File | Topic |
 |---|---|---|
 | 1 | [01-top-sql-patterns.md](./10-interview-patterns/01-top-sql-patterns.md) | 12 core patterns: aggregation, anti-join, running total... |
-| 2 | [02-nth-highest-salary.md](./10-interview-patterns/02-nth-highest-salary.md) | 🔥 The #1 most asked question — 5 approaches |
+| 2 | [02-nth-highest-salary.md](./10-interview-patterns/02-nth-highest-salary.md) |  The #1 most asked question — 5 approaches |
 | 3 | [03-rapid-fire-differences.md](./10-interview-patterns/03-rapid-fire-differences.md) | 15 classic comparisons: WHERE vs HAVING, RANK vs DENSE_RANK... |
 
 ---
@@ -151,28 +151,28 @@ Work through modules in order. Each folder builds on the previous.
 | 1 | [01-sql-execution-order.md](./11-concepts/01-sql-execution-order.md) | FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY |
 | 2 | [02-normalization.md](./11-concepts/02-normalization.md) | 1NF, 2NF, 3NF, BCNF — with step-by-step example |
 | 3 | [03-performance-basics.md](./11-concepts/03-performance-basics.md) | 11 query optimization tips with examples |
-| 4 | [04-sql-commands-reference.md](./11-concepts/04-sql-commands-reference.md) | 📋 Complete cheatsheet — DDL, DML, TCL, DCL, functions |
+| 4 | [04-sql-commands-reference.md](./11-concepts/04-sql-commands-reference.md) |  Complete cheatsheet — DDL, DML, TCL, DCL, functions |
 
 ---
 
-## 🎯 Interview Priority Guide
+##  Interview Priority Guide
 
 | Priority | Modules |
 |---|---|
-| 🔴 **Must Know** | 1, 2, 3, 4 (joins), 6 (window functions), 10 |
-| 🟡 **Important** | 5 (subqueries), 7 (views/indexes), 8 (ACID) |
-| 🟢 **Good to Know** | 9 (string/date), 11 (theory) |
+|  **Must Know** | 1, 2, 3, 4 (joins), 6 (window functions), 10 |
+|  **Important** | 5 (subqueries), 7 (views/indexes), 8 (ACID) |
+|  **Good to Know** | 9 (string/date), 11 (theory) |
 
 ---
 
-## 📖 Resources
+##  Resources
 
 - [Beyond LeetCode SQL](https://github.com/shawlu95/Beyond-LeetCode-SQL) — advanced problem patterns
 - [LeetCode SQL 50](https://leetcode.com/studyplan/top-sql-50/) — most common interview questions
 
 ---
 
-## 💡 Study Strategy
+##  Study Strategy
 
 1. **Do one module per day** — don't rush
 2. **Write queries by hand** before checking answers
