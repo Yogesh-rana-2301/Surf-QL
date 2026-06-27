@@ -257,11 +257,60 @@ ORDER BY avg_bonus DESC;
 ## ❓ Practice Questions
 
 1. Write a query to find the **total number of orders**, **number of distinct customers** who placed orders, and the **average order amount** from the `orders` table. Do this in a single `SELECT` statement.
+```sql
+SELECT
+    COUNT(*),
+    COUNT(DISTINCT customers),
+    AVG(amount)
+FROM orders
 
-2. In the `performance` table, some employees may have `NULL` values for `bonus`. Write two queries: one that computes the average bonus **excluding NULLs** (default behaviour) and one that **treats NULL as 0** when computing the average. Explain the difference in results.
+```
 
-3. Write a query that returns — for each `dept_id` — the **count of all employees**, the **count of employees who have a manager** (non-NULL `manager_id`), and the **difference** between the two (i.e., how many are top-level).
+3. In the `performance` table, some employees may have `NULL` values for `bonus`. Write two queries: one that computes the average bonus **excluding NULLs** (default behaviour) and one that **treats NULL as 0** when computing the average. Explain the difference in results.
 
-4. From the `orders` table, find each `customer_id` along with the **number of distinct products** they have ordered, and the **total amount spent**. Filter to only include customers who have ordered **at least 2 distinct products**.
+```sql
+SELECT
+    AVG(bonus)
+FROM performance
 
-5. Write a query using `MIN` and `MAX` on the `hire_date` column of `employees` to find — per `dept_id` — the **earliest** and **most recent** hire date. Also compute the number of days between them (`DATEDIFF` or `MAX(hire_date) - MIN(hire_date)`).
+or
+SELECT
+    AVG(COALESCE(bonus,0))
+FROM performance
+
+```
+
+5. Write a query that returns — for each `dept_id` — the **count of all employees**, the **count of employees who have a manager** (non-NULL `manager_id`), and the **difference** between the two (i.e., how many are top-level).
+
+```sql
+SELECT
+    dept_id,
+    COUNT(*) AS total_employees,
+    COUNT(manager_id) AS employees_with_manager,
+    total_employees - employees_with_manager
+FROM employees
+GROUP BY dept_id;
+
+```
+
+7. From the `orders` table, find each `customer_id` along with the **number of distinct products** they have ordered, and the **total amount spent**. Filter to only include customers who have ordered **at least 2 distinct products**.
+```sql
+SELECT
+    customer_id,
+    COUNT(DISTINCT product_id) AS distinct_products,
+    SUM(amount) AS total_amount_spent
+FROM orders
+GROUP BY customer_id
+HAVING COUNT(DISTINCT product_id) >= 2;
+```
+
+9. Write a query using `MIN` and `MAX` on the `hire_date` column of `employees` to find — per `dept_id` — the **earliest** and **most recent** hire date. Also compute the number of days between them (`DATEDIFF` or `MAX(hire_date) - MIN(hire_date)`).
+```sql
+SELECT
+    dept_id,
+    MIN(hire_date) AS earliest,
+    MAX(hire_date) AS most_recent,
+    DATEDIFF(MAX(hire_date), MIN(hire_date)) AS days_between
+FROM employees
+GROUP BY dept_id;
+```
