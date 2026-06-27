@@ -226,14 +226,44 @@ HAVING headcount >= 2;  -- works in PostgreSQL only
 ## ❓ Practice Questions
 
 1. Find all departments where the **minimum salary** is above 65,000. Show `dept_id` and the minimum salary.
+```sql
+SELECT dept, MIN(salary)
+FROM employees
+GROUP BY dept
+HAVING MIN(salary)>65000
 
-2. Write a query to find all customers who have placed **at least 2 orders** with a total `amount` greater than **5,000**. Use both `COUNT` and `SUM` in `HAVING`.
+```
 
-3. From the `performance` table, find all employees whose **average bonus** across all years is greater than **10,000** and who have been reviewed in **at least 2 different years**.
+3. Write a query to find all customers who have placed **at least 2 orders** with a total `amount` greater than **5,000**. Use both `COUNT` and `SUM` in `HAVING`.
 
-4. A product manager wants to see all product `category` groups where the **average price** is above 1,000 AND the **number of products** in that category is at least 3. Write the query.
+```sql
+SELECT customer_id
+FROM orders
+GROUP BY customer_id
+HAVING SUM(*)>2 AND SUM(amount)>5000;
 
-5. Explain the bug in this query and fix it:
+```
+
+5. From the `performance` table, find all employees whose **average bonus** across all years is greater than **10,000** and who have been reviewed in **at least 2 different years**.
+```sql
+SELECT employee_id
+FROM performance
+GROUP BY employee_id
+HAVING COUNT(DISTINCT YEAR)>=2 AND AVG(bonus)>10000;
+
+```
+
+7. A product manager wants to see all product `category` groups where the **average price** is above 1,000 AND the **number of products** in that category is at least 3. Write the query.
+```sql
+SELECT category
+FROM products
+GROUP BY category
+HAVING COUNT(*)>=3 AND AVG(price)>1000;
+
+
+```
+
+9. Explain the bug in this query and fix it:
    ```sql
    SELECT dept_id, AVG(salary) AS avg_sal
    FROM employees
@@ -241,3 +271,6 @@ HAVING headcount >= 2;  -- works in PostgreSQL only
    GROUP BY dept_id;
    ```
    What error does it produce, and what is the correct version?
+```sql
+where glt cheez use krra
+```
