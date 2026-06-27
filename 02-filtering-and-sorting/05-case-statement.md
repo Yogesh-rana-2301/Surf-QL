@@ -236,11 +236,73 @@ JOIN employees e ON e.emp_id = p.emp_id;
 ## ❓ Practice Questions
 
 1. Write a query that displays each employee's `name`, `salary`, and a new column `salary_grade` that shows `'Grade A'` for salary ≥ 90000, `'Grade B'` for 75000–89999, `'Grade C'` for 60000–74999, and `'Grade D'` for anything below.
+```sql
+SELECT 
+    name, 
+    salary,
+    CASE
+        WHEN salary >= 90000 THEN 'Grade A'
+        WHEN salary BETWEEN 75000 AND 89999 THEN 'Grade B'
+        WHEN salary BETWEEN 60000 AND 74999 THEN 'Grade C'
+        ELSE 'Grade D'
+    END AS salary_grade
+FROM employees;
+```
 
-2. Using conditional aggregation with `CASE`, write a single query that shows — for each `dept_id` — the **total salary paid** to employees in the `'High'` band (≥ 90000) and the **total salary paid** to employees in the `'Low'` band (< 75000).
+3. Using conditional aggregation with `CASE`, write a single query that shows — for each `dept_id` — the **total salary paid** to employees in the `'High'` band (≥ 90000) and the **total salary paid** to employees in the `'Low'` band (< 75000).
+```sql
+SELECT 
+    dept_id,
+    SUM(
+        CASE
+            WHEN salary >= 90000 THEN salary
+            ELSE 0
+        END
+    ) AS high_salary_total,
+    SUM(
+        CASE
+            WHEN salary < 75000 THEN salary
+            ELSE 0
+        END
+    ) AS low_salary_total
+FROM employees
+GROUP BY dept_id
+```
 
-3. Write a query that retrieves all orders and adds a column `priority` that is `'Urgent'` if `status = 'Pending'` and `amount > 1000`, `'Normal'` if `status = 'Pending'` and `amount <= 1000`, and `'Closed'` for all other statuses.
 
-4. Using a `CASE` in `ORDER BY`, sort the `products` table so that `'Electronics'` appears first, `'Clothing'` second, `'Food'` third, and all other categories last. Within each category, sort by `price` descending.
+5. Write a query that retrieves all orders and adds a column `priority` that is `'Urgent'` if `status = 'Pending'` and `amount > 1000`, `'Normal'` if `status = 'Pending'` and `amount <= 1000`, and `'Closed'` for all other statuses.
+```sql
+SELECT 
+     order_id,
+    CASE
+        WHEN status = 'Pending' AND amount > 1000 THEN 'Urgent'
+        WHEN status = 'Pending' AND amount <=1000 THEN 'Normal'
+        ELSE 'Closed'
+    END AS priority
+FROM orders
+ 
+```
 
-5. Write an `UPDATE` statement using `CASE` that raises the `bonus` in the `performance` table by 20% for employees with `rating = 'A'`, by 10% for `rating = 'B'`, and leaves the bonus unchanged for all other ratings.
+7. Using a `CASE` in `ORDER BY`, sort the `products` table so that `'Electronics'` appears first, `'Clothing'` second, `'Food'` third, and all other categories last. Within each category, sort by `price` descending.
+```sql
+SELECT 
+    order_id
+FROM products
+ORDER BY
+    CASE
+        WHEN category = 'Electronics' THEN 1
+        WHEN category = 'Clothing' THEN 2
+        WHEN category =  'Food' THEN 3
+        ELSE 4
+    END , price DESC
+```
+
+9. Write an `UPDATE` statement using `CASE` that raises the `bonus` in the `performance` table by 20% for employees with `rating = 'A'`, by 10% for `rating = 'B'`, and leaves the bonus unchanged for all other ratings.
+```sql
+UPDATE performance
+SET bonus = bonus * CASE
+    WHEN rating = 'A' THEN 1.2
+    WHEN rating = 'B' THEN 1.1
+    ELSE 1
+END;
+```
