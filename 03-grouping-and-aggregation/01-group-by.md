@@ -44,6 +44,27 @@ This order explains two vital rules:
 - You can group by **expressions** (e.g., `YEAR(hire_date)`, `dept_id * 10`), not just raw column names.
 - `NULL` values are grouped together — all rows with `NULL` in the grouping column form one group.
 
+
+> there is a problem with grouping sets, cube, in mysql but not in oracle, and postgre, that it wont fill the not known values with NULL automatically so invalid, so think of grouping sets as
+> ROLLUPs do work tho
+
+```sql
+SELECT
+    Region,
+    NULL AS Product,
+    SUM(Amount)
+FROM Sales
+GROUP BY Region
+
+UNION ALL
+
+SELECT
+    NULL AS Region,
+    Product,
+    SUM(Amount)
+FROM Sales
+GROUP BY Product;
+```
 ### GROUPING SETS, ROLLUP, CUBE (Advanced)
 
 These extensions generate multiple groupings in a single query, useful for reporting totals and subtotals without `UNION ALL`.
@@ -196,14 +217,80 @@ ORDER BY emp_id, year;
 4. **ROLLUP vs CUBE** — `ROLLUP` creates hierarchical subtotals (left-to-right rollup). `CUBE` creates *all* combinations of subtotals. For a two-column group, `CUBE` gives 4 grouping sets vs `ROLLUP`'s 3.
 5. **GROUP BY vs DISTINCT** — Both can produce unique combinations of column values. But `GROUP BY` is designed for aggregation; use `DISTINCT` when you just want unique rows without aggregation. Performance-wise they're often equivalent, but semantically different.
 
-## ❓ Practice Questions
+## Practice Questions
 
 1. Write a query to find the **total salary** and **number of employees** in each department. Sort the result by total salary descending.
 
-2. Find the **average order amount** per `customer_id` from the `orders` table. Only include customers who have placed **more than 2 orders** (hint: you'll need `HAVING`).
+```sql
+SELECT
+       dept,
+       SUM (salary) AS TOTAL,
+       COUNT (*) AS numberOFEmployees
 
-3. Write a query that groups `performance` records by `year` and `rating`, and shows the **count** and **average bonus** for each combination. Sort by year and then rating.
+FROM employees
+GROUP BY dept
+ORDER BY TOTAL DESC;
+```
 
-4. Using `ROLLUP`, write a query on the `orders` table that shows `SUM(amount)` grouped by `customer_id` with a grand total row included.
+3. Find the **average order amount** per `customer_id` from the `orders` table. Only include customers who have placed **more than 2 orders** (hint: you'll need `HAVING`)
+```sql
+SELECT
+       customer_id,
+       AVG(amount) AS average_order_amount
+FROM orders
+GROUP BY customer_id
+HAVING COUNT(*)>2;
 
-5. You want to count how many products exist in each `category` from the `products` table, and also count how many products fall into a **price band** (`CASE`: 'Budget' < 500, 'Mid' 500–2000, 'Premium' > 2000). Use two separate `GROUP BY` queries or combine them with `GROUPING SETS`.
+```
+
+5. Write a query that groups `performance` records by `year` and `rating`, and shows the **count** and **average bonus** for each combination. Sort by year and then rating.
+```sql
+SELECT
+    year,
+    rating,
+    COUNT(*) AS record_count,
+    AVG(bonus) AS avg_bonus
+FROM performance
+GROUP BY year, rating
+ORDER BY year, rating;
+```
+
+
+7. Using `ROLLUP`, write a query on the `orders` table that shows `SUM(amount)` grouped by `customer_id` with a grand total row included.
+```sql
+SELECT
+       customer_id,
+       SUM (amount)
+FROM orders
+GROUP BY ROLLUP (customer_id);
+
+```
+
+9. You want to count how many products exist in each `category` from the `products` table, and also count how many products fall into a **price band** (`CASE`: 'Budget' < 500, 'Mid' 500–2000, 'Premium' > 2000). Use two separate `GROUP BY` queries or combine them with `GROUPING SETS`.
+
+```sql
+SELECT
+    category,
+    COUNT(*) AS product_count
+FROM products
+GROUP BY category;
+
+
+
+
+
+SELECT
+    CASE
+        WHEN price < 500 THEN 'Budget'
+        WHEN price <= 2000 THEN 'Mid'
+        ELSE 'Premium'
+    END AS price_band,
+    COUNT(*) AS product_count
+FROM products
+GROUP BY
+    CASE
+        WHEN price < 500 THEN 'Budget'
+        WHEN price <= 2000 THEN 'Mid'
+        ELSE 'Premium'
+    END;
+```
