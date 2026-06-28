@@ -2,6 +2,15 @@
 
 A structured, interview-ready SQL study repository. Every topic file includes explanations, examples using a **shared dataset**, interview tips, and practice questions.
 
+
+| S.No | Topic | Completion Date | Revision Date | Fully |
+|------|-------|----------------|---------------|-------|
+| 1    |  BASICS      |    26 JUNE            |             | ☐     |
+| 2    |  filtering and sorting     |      27 JUNE          |             | ☐     |
+| 3    |    GROUPING AND AGGREGATION  |     28 JUNE         |             | ☐     |
+| 4    |   JOINS |     28 JUNE         |             | ☐     |
+
+
 ---
 
 ## Shared Dataset
