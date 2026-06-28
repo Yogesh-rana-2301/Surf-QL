@@ -224,11 +224,49 @@ SELECT emp_id FROM employees;
 ## ❓ Practice Questions
 
 1. Write a query to find all **unique cities** that customers in the `customers` table are from. Sort alphabetically.
+```sql
+SELECT DISTINCT cities
+FROM customers
+ORDER BY cities;
 
-2. How many **distinct products** have been ordered at least once? Use `COUNT(DISTINCT ...)` on the `orders` table.
+```
 
-3. For each `customer_id` in the `orders` table, compute the **number of distinct order statuses** that customer has had (e.g., a customer may have both 'Pending' and 'Delivered' orders). Show customer_id and the count.
+3. How many **distinct products** have been ordered at least once? Use `COUNT(DISTINCT ...)` on the `orders` table.
+```sql
+SELECT COUNT(DISTINCT product)
+FROM orders;
 
-4. Write both a `SELECT DISTINCT` version and a `GROUP BY` version that return the unique `(category, price)` combinations from the `products` table. Are the results identical? When would they differ?
 
-5. From the `performance` table, find all distinct `(emp_id, year)` pairs where the employee received a rating of `'A'`. Explain why you might or might not need `DISTINCT` here depending on the data's constraints.
+```
+
+5. For each `customer_id` in the `orders` table, compute the **number of distinct order statuses** that customer has had (e.g., a customer may have both 'Pending' and 'Delivered' orders). Show customer_id and the count.
+```sql
+SELECT customer_id,
+       COUNT(DISTINCT status) AS distinct_status_count
+FROM orders
+GROUP BY customer_id;
+```
+
+
+7. Write both a `SELECT DISTINCT` version and a `GROUP BY` version that return the unique `(category, price)` combinations from the `products` table. Are the results identical? When would they differ?
+```sql
+SELECT DISTINCT category, price
+FROM products ;
+
+or
+
+SELECT category, price
+FROM products
+GROUP BY category, price;
+
+
+```
+
+9. From the `performance` table, find all distinct `(emp_id, year)` pairs where the employee received a rating of `'A'`. Explain why you might or might not need `DISTINCT` here depending on the data's constraints.
+```sql
+
+SELECT DISTINCT emp_id, year
+FROM performance 
+WHERE rating='A;;
+
+```
