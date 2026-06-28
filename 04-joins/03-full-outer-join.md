@@ -259,11 +259,69 @@ NULL       | NULL  | 99          | 2022 | B      ← ex-employee still has perf 
 ## ❓ Practice Questions
 
 1. Write a FULL OUTER JOIN query to list all employees and all departments together, including employees with no department and departments with no employees. Use any database that supports it natively.
+```sql
+SELECT e.employee_id,
+       d.dept_id
+FROM employee e
+LEFT JOIN department d
+ON e.dept_id = d.dept_id
 
-2. Write the MySQL-compatible equivalent (using UNION of LEFT and RIGHT JOIN) for the query in Question 1.
+UNION
 
-3. Find all products that have never appeared in any order, AND all orders that reference a product not in the products table, using a FULL OUTER JOIN. Display the relevant IDs and names.
+SELECT e.employee_id,
+       d.dept_id
+FROM employee e
+RIGHT JOIN department d
+ON e.dept_id = d.dept_id;
+```
 
-4. Write a query using FULL OUTER JOIN between `employees` and `performance` to identify: (a) employees with no performance records, and (b) performance records with no matching employee. Label each type of mismatch.
+3. Write the MySQL-compatible equivalent (using UNION of LEFT and RIGHT JOIN) for the query in Question 1.
+```sql
 
-5. You are given two data sources: the `customers` table and the `orders` table. Use a FULL OUTER JOIN to find customers who have never ordered AND orders that have no associated customer. What does this tell you about data integrity?
+SELECT ....
+FROM department d
+LEFT JOIN employee e
+ON 
+
+
+UNION 
+
+
+SELECT ... 
+FROM department d
+RIGHT JOIN employee e
+ON 
+```
+
+5. Find all products that have never appeared in any order, AND all orders that reference a product not in the products table, using a FULL OUTER JOIN. Display the relevant IDs and names.
+```sql
+easy
+```
+
+7. Write a query using FULL OUTER JOIN between `employees` and `performance` to identify: (a) employees with no performance records, and (b) performance records with no matching employee. Label each type of mismatch.
+```sql
+SELECT
+    e.employee_id AS emp,
+    p.employee_id AS per,
+    'No matching employee' AS mismatch_type
+FROM performance p
+LEFT JOIN employee e
+ON p.employee_id = e.employee_id
+WHERE e.employee_id IS NULL
+
+UNION
+
+SELECT
+    e.employee_id AS emp,
+    p.employee_id AS per,
+    'No performance record' AS mismatch_type
+FROM performance p
+RIGHT JOIN employee e
+ON p.employee_id = e.employee_id
+WHERE p.employee_id IS NULL;
+```
+
+9. You are given two data sources: the `customers` table and the `orders` table. Use a FULL OUTER JOIN to find customers who have never ordered AND orders that have no associated customer. What does this tell you about data integrity?
+```sql
+simple full outer join
+```
