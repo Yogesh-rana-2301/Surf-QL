@@ -237,11 +237,71 @@ This is functionally equivalent to an `INNER JOIN ... ON` but is harder to read,
 ## ❓ Practice Questions
 
 1. Write a query to display each employee's name, their department name, and department location. Exclude employees who are not assigned to any department.
+```sql
+SELECT e.name,d.dept_name,d.dept_location
+FROM employyes e
+INNER JOIN department d
+ON e.dept_id = d.dept_id
 
-2. List all orders (order_id, amount, status) along with the customer's name and city. Only include orders where the customer is from `'Mumbai'` or `'Bangalore'`.
+```
 
-3. Find all employees who received a performance rating of `'A'` in the year 2023. Display the employee name, department name, rating, and bonus amount.
+3. List all orders (order_id, amount, status) along with the customer's name and city. Only include orders where the customer is from `'Mumbai'` or `'Bangalore'`.
+```sql
+SELECT
+    c.name,
+    c.city,
+    o.order_id,
+    o.amount,
+    o.status
+FROM customers c
+INNER JOIN orders o
+ON c.customer_id = o.customer_id
+WHERE c.city IN ('Mumbai', 'Bangalore');
+```
 
-4. Write a query to show each order's details (order_id, order_date, amount) along with the product name, category, and customer name. Filter for only `'Delivered'` orders.
+5. Find all employees who received a performance rating of `'A'` in the year 2023. Display the employee name, department name, rating, and bonus amount.
+```sql
+SELECT
+    e.name,
+    d.dept_name,
+    p.rating,
+    p.bonus
+FROM employees e
+INNER JOIN department d
+ON e.dept_id = d.dept_id
+INNER JOIN performance p
+ON e.emp_id = p.emp_id
+WHERE p.rating = 'A'
+  AND p.year = 2023;
 
-5. How many orders has each customer placed? Display the customer name and order count. Only include customers who have placed at least one order. Order by order count descending.
+```
+
+7. Write a query to show each order's details (order_id, order_date, amount) along with the product name, category, and customer name. Filter for only `'Delivered'` orders.
+```sql
+SELECT
+    o.order_id,
+    o.order_date,
+    o.amount,
+    p.product_name,
+    p.category,
+    c.name AS customer_name
+FROM orders o
+INNER JOIN customers c
+ON o.customer_id = c.customer_id
+INNER JOIN products p
+ON o.product_id = p.product_id
+WHERE o.status = 'Delivered';
+
+```
+
+9. How many orders has each customer placed? Display the customer name and order count. Only include customers who have placed at least one order. Order by order count descending.
+```sql
+SELECT c.name, COUNT (o.order_id) AS order_cnt
+FROM customer c
+INNER JOIN order o
+ON c.customer_id=o.customer_id
+GROUP BY c.customer_id, c.name
+HAVING COUNT(o.order_id)>=1
+ORDER BY order_cnt DESC; 
+
+```
