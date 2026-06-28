@@ -330,14 +330,63 @@ Meena Iyer    | NULL     | NULL    | NULL
 
 ---
 
-## ❓ Practice Questions
+##   Practice Questions
 
 1. Write a query to list all customers along with the total number of orders they have placed. Customers who have never ordered should show a count of 0.
+```sql
+SELECT
+    c.customer_id,
+    COUNT(o.order_id) AS order_count
+FROM customer c
+LEFT JOIN orders o
+ON c.customer_id = o.customer_id
+GROUP BY c.customer_id;
+```
 
-2. Find all employees who are **not assigned** to any department (i.e., their `dept_id` is NULL or has no matching department). Use a LEFT JOIN approach.
+3. Find all employees who are **not assigned** to any department (i.e., their `dept_id` is NULL or has no matching department). Use a LEFT JOIN approach.
+```sql
+using anti join
 
-3. List all products along with any orders placed for them. Include products that have never been ordered, and show `NULL` for the order columns in that case.
+SELECT employee_id
+FROM employees e
+LEFT JOIN deparmtent d 
+ON e.dept_id=d.dept_id
+WHERE d.dept_id IS NULL;
+```
 
-4. Write two versions of a query: one that shows all customers with orders that have `status = 'Delivered'` using a `WHERE` clause, and one using an `ON` clause. Explain the difference in results.
+5. List all products along with any orders placed for them. Include products that have never been ordered, and show `NULL` for the order columns in that case.
+```sql
+SELECT p.*, o.*
+FROM products p
+LEFT JOIN orders o
+ON p.product_id = o.product_id;
+ 
+```
+6. Write two versions of a query: one that shows all customers with orders that have `status = 'Delivered'` using a `WHERE` clause, and one using an `ON` clause. Explain the difference in results.
+```sql
+SELECT c.customer_id
+FROM customer c
+LEFT JOIN order o
+ON c.customer_id = o.customer_id
+WHERE o.status = 'Deliverd';
 
-5. For each department, show the number of employees currently in it. Include departments that have zero employees. Order by employee count descending.
+ir
+
+SELECT c.customer_id
+FROM customer c
+LEFT JOIN order o
+ON c.customer_id = o.customer_id
+    AND o.status = 'Delivered';
+```
+
+8. For each department, show the number of employees currently in it. Include departments that have zero employees. Order by employee count descending.
+```sql
+SELECT d.dept_id,
+       COUNT(e.employee_id) AS employee_count
+FROM department d
+LEFT JOIN employee e
+ON d.dept_id = e.dept_id
+GROUP BY d.dept_id
+ORDER BY employee_count DESC;
+
+```
