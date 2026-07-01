@@ -283,11 +283,61 @@ JOIN employees e2
 ## ❓ Practice Questions
 
 1. Write a CROSS JOIN query to generate all possible (employee, department) pairs — regardless of which department the employee actually belongs to. How many rows do you expect if there are 6 employees and 4 departments?
+```sql
+SELECT ...
+FROM employee e
+CROSS JOIN department d;
 
-2. Using a SELF JOIN on the `employees` table, write a query to display each employee's name, their direct manager's name, and their department. Exclude employees who report to no one.
+```
 
-3. Write a SELF JOIN query to find all pairs of employees (from the same department) where one earns at least 10,000 more than the other. Display both names, both salaries, and the department name.
+3. Using a SELF JOIN on the `employees` table, write a query to display each employee's name, their direct manager's name, and their department. Exclude employees who report to no one.
+```sql
+SELECT ...
+FROM employee e1
+JOIN employee e2
+    ON e1.mgr_id = e2.emp_id;
+```
 
-4. Use a CROSS JOIN between `products` and `customers` combined with a `NOT EXISTS` subquery to find all (customer, product) combinations where the customer has **never ordered** that product.
+5. Write a SELF JOIN query to find all pairs of employees (from the same department) where one earns at least 10,000 more than the other. Display both names, both salaries, and the department name.
+```sql
+SELECT ...
+FROM employee e1
+JOIN employee e2
+    ON e1.department = e2.department
+    AND e1.sal > e2.sal + 10000
+    AND e1.emp_id<> e2.emp_id;
+```
 
-5. Write a query using a SELF JOIN to identify which employees are managers (i.e., appear as `manager_id` in at least one other employee's row). Display manager name, their own manager's name, and how many direct reports they have.
+
+7. Use a CROSS JOIN between `products` and `customers` combined with a `NOT EXISTS` subquery to find all (customer, product) combinations where the customer has **never ordered** that product.
+
+```sql
+SELECT ...
+FROM products p
+CROSS JOIN customers c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM orders o
+    WHERE o.customer_id == c.customer_id
+    AND o.product_id = p.product_id
+
+```
+
+9. Write a query using a SELF JOIN to identify which employees are managers (i.e., appear as `manager_id` in at least one other employee's row). Display manager name, their own manager's name, and how many direct reports they have.
+
+```sql
+SELECT
+    m.emp_name AS manager_name,
+    mgr.emp_name AS managers_manager,
+    COUNT(e.emp_id) AS direct_reports
+FROM employees m
+LEFT JOIN employees mgr
+    ON m.mgr_id = mgr.emp_id
+JOIN employees e
+    ON e.mgr_id = m.emp_id
+GROUP BY
+    m.emp_id,
+    m.emp_name,
+    mgr.emp_name;
+
+```
