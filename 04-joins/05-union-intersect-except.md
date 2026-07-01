@@ -323,11 +323,75 @@ ORDER BY order_date;
 ## ❓ Practice Questions
 
 1. Write a query using `UNION` to produce a combined list of all employee names and customer names, with a column indicating whether each person is an `'Employee'` or a `'Customer'`.
+```sql
+SELECT ...
+FROM employees
 
-2. Using `INTERSECT`, find the `customer_id`s of customers who have placed orders AND whose city is `'Bangalore'`. Then write the equivalent query using `INNER JOIN` (to practice the MySQL workaround).
+UNION
+SELECT ...
+FROM customer
 
-3. Using `EXCEPT`, find all products that have never appeared in any order. Write the equivalent query using `LEFT JOIN ... IS NULL` as a MySQL-compatible alternative.
+```
 
-4. Write a `UNION ALL` query that combines the total order amount by status for the years 2023 and 2024 separately, then adds a grand total row at the bottom. (Hint: You may use `GROUP BY` in each sub-query.)
+3. Using `INTERSECT`, find the `customer_id`s of customers who have placed orders AND whose city is `'Bangalore'`. Then write the equivalent query using `INNER JOIN` (to practice the MySQL workaround).
+```sql
+SELECT ...
+FROM orders
 
-5. Explain with an example why `ORDER BY` inside a UNION's sub-SELECT is not allowed. What is the correct way to sort the final result of a UNION query?
+INTERSECT 
+SELECT ...
+FROM customer
+WHERE city = 'Bangalore'
+
+
+or
+
+SELECT DISTINCT ...
+FROM customer c
+INNER JOIN orders o
+ON ...=...
+WHERE c.city = 'Bangalore;
+```
+
+5. Using `EXCEPT`, find all products that have never appeared in any order. Write the equivalent query using `LEFT JOIN ... IS NULL` as a MySQL-compatible alternative.
+```sql
+SELECT product_id
+FROM products
+
+EXCEPT
+
+SELECT product_id
+FROM orders;
+```
+
+7. Write a `UNION ALL` query that combines the total order amount by status for the years 2023 and 2024 separately, then adds a grand total row at the bottom. (Hint: You may use `GROUP BY` in each sub-query.)
+
+```sql
+SELECT
+    '2023' AS year,
+    status,
+    SUM(amount) AS total_amount
+FROM orders
+WHERE YEAR(order_date) = 2023
+GROUP BY status
+
+UNION ALL
+
+SELECT
+    '2024' AS year,
+    status,
+    SUM(amount) AS total_amount
+FROM orders
+WHERE YEAR(order_date) = 2024
+GROUP BY status
+
+UNION ALL
+
+SELECT
+    'Grand Total' AS year,
+    NULL AS status,
+    SUM(amount) AS total_amount
+FROM orders;
+```
+
+9. Explain with an example why `ORDER BY` inside a UNION's sub-SELECT is not allowed. What is the correct way to sort the final result of a UNION query?
