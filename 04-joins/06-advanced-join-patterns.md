@@ -588,11 +588,108 @@ CREATE INDEX idx_orders_covering
 ## ❓ Practice Questions
 
 1. Write a **Semi Join** query using `EXISTS` to find all customers who have placed at least one order with `status = 'Delivered'`. Then write the equivalent using `IN`. Explain why you would prefer `EXISTS`.
+```sql
+SELECT ...
+FROM customers c
+WHERE EXISTS (
+    SELECT 1
+    FROM orders o
+    WHERE c.customer_id = o.customer_id
+    AND o.status = 'Delivered'
+);
 
-2. Write an **Anti Join** query using both `NOT EXISTS` and `LEFT JOIN IS NULL` to find employees who have **no performance record** in the `performance` table. Verify both produce the same result.
+or
 
-3. You need to compute the **average bonus per department** for the year 2023, but notice that joining `employees` to `performance` before grouping inflates the salary sum. Write a correct query using a CTE or subquery to aggregate performance data first, then join to departments.
+SELECT ...
+FROM customers
+WHERE customer_id IN (
+    SELECT customer_id
+    FROM orders
+    WHERE status = 'Delivered'
+);
 
-4. Using a **non-equi join**, assign each employee a salary grade label (`'High'` for salary ≥ 80000, `'Mid'` for 60000–79999, `'Low'` for < 60000) by joining employees to a hypothetical `salary_bands` table with `(label, min_sal, max_sal)` columns.
+```
 
-5. Write a **4-table join** query that returns each order's `order_id`, `order_date`, `status`, the customer's `name` and `city`, the product's `product_name` and `category`, and the product's `price`. Filter for only `'Electronics'` category products and orders placed in 2024.
+3. Write an **Anti Join** query using both `NOT EXISTS` and `LEFT JOIN IS NULL` to find employees who have **no performance record** in the `performance` table. Verify both produce the same result.
+```sql
+
+SELECT ...
+FROM employee e
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM performance p 
+    WHERE e.emp_id=p.emp_id; 
+);
+
+or
+
+
+
+SELECT
+    e.emp_id,
+    e.name
+FROM employees e
+LEFT JOIN performance p
+    ON e.emp_id = p.emp_id
+WHERE p.emp_id IS NULL;
+
+```
+
+5. You need to compute the **average bonus per department** for the year 2023, but notice that joining `employees` to `performance` before grouping inflates the salary sum. Write a correct query using a CTE or subquery to aggregate performance data first, then join to departments.
+```sql
+
+SELECT
+    d.dept_name,
+    AVG(p.avg_bonus) AS avg_bonus
+FROM departments d
+JOIN employees e
+    ON d.dept_id = e.dept_id
+JOIN (
+    SELECT
+        emp_id,
+        AVG(bonus) AS avg_bonus
+    FROM performance
+    WHERE year = 2023
+    GROUP BY emp_id
+) p
+    ON e.emp_id = p.emp_id
+GROUP BY d.dept_name;
+```
+
+7. Using a **non-equi join**, assign each employee a salary grade label (`'High'` for salary ≥ 80000, `'Mid'` for 60000–79999, `'Low'` for < 60000) by joining employees to a hypothetical `salary_bands` table with `(label, min_sal, max_sal)` columns.
+```sql
+SELECT
+    e.emp_id,
+    e.emp_name,
+    e.salary,
+    sb.label AS salary_grade
+FROM employees e
+JOIN salary_bands sb
+    ON e.salary BETWEEN sb.min_sal AND sb.max_sal;
+```
+
+9. Write a **4-table join** query that returns each order's `order_id`, `order_date`, `status`, the customer's `name` and `city`, the product's `product_name` and `category`, and the product's `price`. Filter for only `'Electronics'` category products and orders placed in 2024.
+```sql
+
+SELECT
+    o.order_id,
+    o.order_date,
+    o.status,
+    c.name,
+    c.city,
+    p.product_name,
+    p.category,
+    p.price
+FROM orders o
+JOIN customers c
+    ON o.customer_id = c.customer_id
+JOIN order_items oi
+    ON o.order_id = oi.order_id
+JOIN products p
+    ON oi.product_id = p.product_id
+WHERE p.category = 'Electronics'
+  AND o.order_date >= '2024-01-01'
+  AND o.order_date < '2025-01-01';
+
+```
+   
