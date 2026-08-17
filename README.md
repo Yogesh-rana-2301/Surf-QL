@@ -1,3 +1,10 @@
+## COALESCE VS IFNULL
+### IFNULL(expression, replacement_value)
+IFNULL() takes 2 arguments:
+```IFNULL(a, 0)```.  
+COALESCE() can take multiple arguments and returns the first non-NULL value:
+```COALESCE(a, b, c, 0)```
+
 # Surf-QL — SQL Placement Preparation Guide
 
 A structured, interview-ready SQL study repository. Every topic file includes explanations, examples using a **shared dataset**, interview tips, and practice questions.
